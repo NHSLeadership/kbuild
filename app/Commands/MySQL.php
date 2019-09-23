@@ -11,7 +11,7 @@ use Miloske85\php_cli_table\Table as CliTable;
 use DateTime;
 use Exception;
 use Symfony\Component\Yaml\Yaml;
-use Aws\Rds\RdsClient;  
+use Aws\Rds\RdsClient;
 use Aws\Exception\AwsException;
 use App\Providers\OnePassword;
 
@@ -28,6 +28,7 @@ class MySQL extends Command
         {--environment= : The name of the environment}
         {--cloud-provider=aws : Either aws or gcp}
         {--aws-vpc= : The VPC to use. Only used when cloud-provider is set to aws}
+        {--gcp-proj= : The GCP project id to use. Only when cloud-provider is set to gcp}
         {--db-pause=60 : The amount of time in minutes to pause an Aurora instance after no activity}
         {--db-per-branch : Whether to use one database per branch}
         {--use-own-db-server : Whether to use a server explicitly spun up for this app}
@@ -53,33 +54,33 @@ class MySQL extends Command
         // Load in settings
         $this->settings = Yaml::parseFile($this->option('settings'));
 
-        $rdsClient = new RdsClient([
-            'region' => $this->settings['aws']['region'],
-            'version' => '2014-10-31',
-            'credentials' => [
-                'key'    => $this->settings['aws']['awsAccessKeyId'],
-                'secret' => $this->settings['aws']['awsSecretAccessKey'],
-            ],
-        ]);
+        // Check whether we're using a db per branch
+        if ($this->option('use-own-db-server') !== FALSE) {
+            // Use own database server
+            $serverName = $this->option('app') . '-' . $this->option('environment');
+            $this->info($this->option('app') . ' uses own db server');
+        }
+        elseif ($this->option('use-own-db-server') === FALSE) {
+            // Don't use own database server
+            $serverName = 'shared-serverless' . '-' . $this->option('environment');
+            $this->info($this->option('app') . ' uses shared db server');
+        }
+
+        $serverExists = false;
 
         switch ($this->option('cloud-provider')) {
             case 'aws':
 
                 $this->info('Running on aws');
 
-                // Check whether we're using a db per branch
-                if ($this->option('use-own-db-server') !== FALSE) {
-                    // Use own database server
-                    $serverName = $this->option('app') . '-' . $this->option('environment');
-                    $this->info($this->option('app') . ' uses own db server');
-                }
-                elseif ($this->option('use-own-db-server') === FALSE) {
-                    // Don't use own database server
-                    $serverName = 'shared-serverless' . '-' . $this->option('environment');
-                    $this->info($this->option('app') . ' uses shared db server');
-                }
-
-                $serverExists = false;
+                $rdsClient = new RdsClient([
+                    'region' => $this->settings['aws']['region'],
+                    'version' => '2014-10-31',
+                    'credentials' => [
+                        'key' => $this->settings['aws']['awsAccessKeyId'],
+                        'secret' => $this->settings['aws']['awsSecretAccessKey'],
+                    ],
+                ]);
 
                 try {
                     $existingServer = $rdsClient->describeDBClusters([
@@ -147,7 +148,7 @@ class MySQL extends Command
                     // Db server has been created
                     // Sleep for 60 seconds to wait for DNS resolution to work
                     $waitFor = 30;
-                    while($waitFor > 0) {
+                    while ($waitFor > 0) {
                         $this->info('Waiting ' . $waitFor . ' seconds for AWS DNS resolution to work');
                         sleep(1);
                         $waitFor = $waitFor - 1;
@@ -162,9 +163,61 @@ class MySQL extends Command
                 $databaseEndpoint = $existingServer['DBClusters'][0]['Endpoint'];
 
                 break;
-            
+
             case 'gcp':
-                # code...
+                $this->info('Running on GCP');
+
+                // check if DB already exists
+                // gcp-proj, $this->option('cloud-provider')
+                $existingDbs = json_decode(shell_exec('gcloud sql instances list --format="json"'));
+
+                foreach ($existingDbs as $db) {
+                    if ($db->name == $serverName) {
+                        $serverExists = true;
+                    } else {
+                        $this->info($serverName . ' not in account');
+                        exit(1);
+                    }
+                }
+
+                if ($serverExists == false) {
+                    $this->info($serverName . ' does not exist, creating');
+
+                    $SecondsUntilAutoPause = $this->option('db-pause') * 60;
+
+                    $masterPassword = sha1($serverName . $this->settings['mysql']['salt']);
+
+                    $this->info('Master Username: ' . 'master');
+                    $this->info('Master Password: ' . $masterPassword);
+
+                    // create the DB server
+                    $creationCmd = <<<CMD
+gcloud sql instances create $serverName \
+--zone=europe-west2a \
+--availability-type=zonal \
+--nobackup \
+--tier=db-g1-small \
+--root-password=$masterPassword \
+--database-version=MYSQL_5_7 \
+--storage-auto-increase \
+--storage-type=HDD
+CMD;
+                    $csql_result = exec($creationCmd);
+                    $dbDescribe = shell_exec("gcloud sql instances describe $serverName --format=json");
+                    $dbState = json_decode($dbDescribe)->state;
+                    $waitingSeconds = 1;
+                    while($dbState != "RUNNABLE") {
+                        $dbDescribe = shell_exec("gcloud sql instances describe $serverName --format=json");
+                        $dbState = json_decode($dbDescribe)->state;
+                        $this->info('Waiting ' . $waitingSeconds . ' seconds. ' . $serverName . ' ' . json_decode($dbDescribe)->state);
+                        $waitingSeconds = $waitingSeconds + 1;
+                        sleep(1);
+                    }
+
+                    // Db server has been created
+                }
+                // Get the endpoint of the database
+                $databaseEndpoint = json_decode($dbStatus)->ipAddresses[0]->ipAddress;
                 break;
         }
 

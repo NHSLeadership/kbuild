@@ -4,3 +4,4 @@
 /.vagrant
 /certs
 .DS_Store
+settings.yml

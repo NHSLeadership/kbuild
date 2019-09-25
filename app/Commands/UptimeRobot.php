@@ -20,6 +20,7 @@ class UptimeRobot extends Command
      * @var string
      */
     protected $signature = 'create:uptimerobot 
+        {--app= : The name of the application being monitored }
         {--domain= : The domain to be monitored}
         {--settings=/etc/parallax/settings.yaml : The settings.yml file to use}';
 
@@ -58,19 +59,40 @@ class UptimeRobot extends Command
                 'content-type: application/x-www-form-urlencoded'
             ),
         ));
-        $response = curl_exec($curl);
+        $urData = curl_exec($curl);
         $err = curl_error($curl);
         curl_close($curl);
-        $response = json_decode($response);
-        $response = $response->monitors;
+        $urData = json_decode($urData);
+        $urData = $urData->monitors;
         $i = 0;
-        foreach($response as $site) {
+        foreach($urData as $site) {
             $i++;
             $site->url = preg_replace("(^https?://)", "", $site->url );
             $site->url = str_replace("/", "", $site->url);
             $urList[$i] = $site->url;
         }
-        print_r($urList);
+        
+        if(!in_array($this->option('domain'), $urData)) {
+            // add the domain to UptimeRobot
+            $request = 'api_key=' . $urApiKey . '&format=json' . '&friendly_name=' . $this->option('app') . "&url=https://" . $this->option('domain') . "&type=1";
+            $curl = curl_init();
+            curl_setopt_array($curl, array (
+                CURLOPT_URL            => 'https://api.uptimerobot.com/v2/newMonitor',
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING       => '',
+                CURLOPT_MAXREDIRS      => 10,
+                CURLOPT_TIMEOUT        => 30,
+                CURLOPT_HTTP_VERSION   => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST  => 'POST',
+                CURLOPT_POSTFIELDS     => $request,
+                CURLOPT_HTTPHEADER     => array (
+                    'cache-control: no-cache',
+                    'content-type: application/x-www-form-urlencoded'
+                ),
+            ));
+            $response = curl_exec($curl);
+            echo $response;
+        }
     }
 
     /**

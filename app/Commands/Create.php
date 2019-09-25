@@ -444,9 +444,7 @@ class Create extends Command
         }
 
         // add site to UptimeRobot
-        // get prod domain if possible
-        $taskSpooler->addJob('UptimeRobot', "php /opt/parallax/kbuild/kbuild create:uptimerobot --domain='" . $this->option('cloud-provider') . ");
-
+        $taskSpooler->addJob('UptimeRobot', "php /opt/parallax/kbuild/kbuild create:uptimerobot --app=". $this->option('app') ." --domain='" . $yamlFiles->primaryDomain());
     }
 
     /**

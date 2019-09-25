@@ -212,6 +212,18 @@ class YamlFiles {
         return $domains;
     }
 
+    public function primaryDomain () {
+        if(isset($this->kbuild['domains']) && count($this->kbuild['domains']) > 0) {
+            foreach ($this->kbuild['domains'] as $domain) {
+                if(isset($domain['isprimary'])) {
+                    return $domain['domain'];
+                } else {
+                    return 0;
+                }
+            }
+        }
+    }
+
     public function getFiles () {
 
         $this->returnYamlContents = array();

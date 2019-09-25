@@ -1318,3 +1318,55 @@
 #16 /Users/tomferguson/Development/kbuild/kbuild(37): LaravelZero\\Framework\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #17 {main}
 "} 
+[2019-09-25 14:00:06] laravel.EMERGENCY: Unable to create configured logger. Using emergency logger. {"exception":"[object] (InvalidArgumentException(code: 0): Log [default] is not defined. at /Users/tomferguson/Development/kbuild/vendor/laravel/framework/src/Illuminate/Log/LogManager.php:168)
+[stacktrace]
+#0 /Users/tomferguson/Development/kbuild/vendor/laravel/framework/src/Illuminate/Log/LogManager.php(102): Illuminate\\Log\\LogManager->resolve('default')
+#1 /Users/tomferguson/Development/kbuild/vendor/laravel/framework/src/Illuminate/Log/LogManager.php(90): Illuminate\\Log\\LogManager->get('default')
+#2 /Users/tomferguson/Development/kbuild/vendor/laravel/framework/src/Illuminate/Log/LogManager.php(500): Illuminate\\Log\\LogManager->driver()
+#3 /Users/tomferguson/Development/kbuild/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(114): Illuminate\\Log\\LogManager->error('syntax error, u...', Array)
+#4 /Users/tomferguson/Development/kbuild/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(367): Illuminate\\Foundation\\Exceptions\\Handler->report(Object(Symfony\\Component\\Debug\\Exception\\FatalThrowableError))
+#5 /Users/tomferguson/Development/kbuild/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(132): Illuminate\\Foundation\\Console\\Kernel->reportException(Object(Symfony\\Component\\Debug\\Exception\\FatalThrowableError))
+#6 /Users/tomferguson/Development/kbuild/vendor/laravel-zero/framework/src/Kernel.php(77): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#7 /Users/tomferguson/Development/kbuild/kbuild(37): LaravelZero\\Framework\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#8 {main}
+"} 
+[2019-09-25 14:00:06] laravel.ERROR: syntax error, unexpected end of file {"exception":"[object] (Symfony\\Component\\Debug\\Exception\\FatalThrowableError(code: 0): syntax error, unexpected end of file at /Users/tomferguson/Development/kbuild/app/Commands/Create.php:463)
+[stacktrace]
+#0 /Users/tomferguson/Development/kbuild/vendor/composer/ClassLoader.php(322): Composer\\Autoload\\includeFile('/Users/tomfergu...')
+#1 [internal function]: Composer\\Autoload\\ClassLoader->loadClass('App\\\\Commands\\\\Cr...')
+#2 [internal function]: spl_autoload_call('App\\\\Commands\\\\Cr...')
+#3 /Users/tomferguson/Development/kbuild/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(230): is_subclass_of('App\\\\Commands\\\\Cr...', 'Illuminate\\\\Cons...')
+#4 /Users/tomferguson/Development/kbuild/vendor/laravel-zero/framework/src/Kernel.php(105): Illuminate\\Foundation\\Console\\Kernel->load(Array)
+#5 /Users/tomferguson/Development/kbuild/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(317): LaravelZero\\Framework\\Kernel->commands()
+#6 /Users/tomferguson/Development/kbuild/vendor/laravel-zero/framework/src/Kernel.php(85): Illuminate\\Foundation\\Console\\Kernel->bootstrap()
+#7 /Users/tomferguson/Development/kbuild/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(120): LaravelZero\\Framework\\Kernel->bootstrap()
+#8 /Users/tomferguson/Development/kbuild/vendor/laravel-zero/framework/src/Kernel.php(77): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#9 /Users/tomferguson/Development/kbuild/kbuild(37): LaravelZero\\Framework\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#10 {main}
+"} 
+[2019-09-25 14:03:58] laravel.EMERGENCY: Unable to create configured logger. Using emergency logger. {"exception":"[object] (InvalidArgumentException(code: 0): Log [default] is not defined. at /Users/tomferguson/Development/kbuild/vendor/laravel/framework/src/Illuminate/Log/LogManager.php:168)
+[stacktrace]
+#0 /Users/tomferguson/Development/kbuild/vendor/laravel/framework/src/Illuminate/Log/LogManager.php(102): Illuminate\\Log\\LogManager->resolve('default')
+#1 /Users/tomferguson/Development/kbuild/vendor/laravel/framework/src/Illuminate/Log/LogManager.php(90): Illuminate\\Log\\LogManager->get('default')
+#2 /Users/tomferguson/Development/kbuild/vendor/laravel/framework/src/Illuminate/Log/LogManager.php(500): Illuminate\\Log\\LogManager->driver()
+#3 /Users/tomferguson/Development/kbuild/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(114): Illuminate\\Log\\LogManager->error('syntax error, u...', Array)
+#4 /Users/tomferguson/Development/kbuild/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(367): Illuminate\\Foundation\\Exceptions\\Handler->report(Object(Symfony\\Component\\Debug\\Exception\\FatalThrowableError))
+#5 /Users/tomferguson/Development/kbuild/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(132): Illuminate\\Foundation\\Console\\Kernel->reportException(Object(Symfony\\Component\\Debug\\Exception\\FatalThrowableError))
+#6 /Users/tomferguson/Development/kbuild/vendor/laravel-zero/framework/src/Kernel.php(77): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#7 /Users/tomferguson/Development/kbuild/kbuild(37): LaravelZero\\Framework\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#8 {main}
+"} 
+[2019-09-25 14:03:58] laravel.ERROR: syntax error, unexpected end of file {"exception":"[object] (Symfony\\Component\\Debug\\Exception\\FatalThrowableError(code: 0): syntax error, unexpected end of file at /Users/tomferguson/Development/kbuild/app/Commands/Create.php:463)
+[stacktrace]
+#0 /Users/tomferguson/Development/kbuild/vendor/composer/ClassLoader.php(322): Composer\\Autoload\\includeFile('/Users/tomfergu...')
+#1 [internal function]: Composer\\Autoload\\ClassLoader->loadClass('App\\\\Commands\\\\Cr...')
+#2 [internal function]: spl_autoload_call('App\\\\Commands\\\\Cr...')
+#3 /Users/tomferguson/Development/kbuild/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(230): is_subclass_of('App\\\\Commands\\\\Cr...', 'Illuminate\\\\Cons...')
+#4 /Users/tomferguson/Development/kbuild/vendor/laravel-zero/framework/src/Kernel.php(105): Illuminate\\Foundation\\Console\\Kernel->load(Array)
+#5 /Users/tomferguson/Development/kbuild/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(317): LaravelZero\\Framework\\Kernel->commands()
+#6 /Users/tomferguson/Development/kbuild/vendor/laravel-zero/framework/src/Kernel.php(85): Illuminate\\Foundation\\Console\\Kernel->bootstrap()
+#7 /Users/tomferguson/Development/kbuild/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(120): LaravelZero\\Framework\\Kernel->bootstrap()
+#8 /Users/tomferguson/Development/kbuild/vendor/laravel-zero/framework/src/Kernel.php(77): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#9 /Users/tomferguson/Development/kbuild/kbuild(37): LaravelZero\\Framework\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#10 {main}
+"} 

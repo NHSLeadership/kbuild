@@ -94,7 +94,7 @@ class YamlFiles {
             $contentsArray = Yaml::parse($contents);
 
             // If this is a deployment then add environment variables to it
-            if ($contentsArray['kind'] === 'Deployment') {
+            if ($contentsArray['kind'] === 'Deployment' | $contentsArray['kind'] === 'DaemonSet') {
                 foreach ($contentsArray['spec']['template']['spec']['containers'] as $containerKey => $container) {
                     if (!isset($container['env'])) {
                         $contentsArray['spec']['template']['spec']['containers'][$containerKey]['env'] = array();
@@ -218,6 +218,7 @@ class YamlFiles {
 
         // Push bits in as they come
         $this->returnKinds($this->parsedYamlContents, 'Deployment');
+        $this->returnKinds($this->parsedYamlContents, 'DaemonSet');
         $this->returnKinds($this->parsedYamlContents, 'Ingress');
         $this->returnKinds($this->parsedYamlContents, 'Certificate');
         $this->returnKinds($this->parsedYamlContents, 'Service');
@@ -238,6 +239,8 @@ class YamlFiles {
                 $dependency = $this->taskSpooler->addJob("$kind " . Yaml::parse($deployment['file'])['metadata']['name'], "kubectl --kubeconfig=" . $this->kubeconfig . " apply -f " . '/tmp/' . $hash);
                 if ($kind === 'Deployment') {
                     $this->taskSpooler->addJob('Rollout deployment ' . Yaml::parse($deployment['file'])['metadata']['name'], "kubectl rollout status deployment --kubeconfig=" . $this->kubeconfig . " -n " . Yaml::parse($deployment['file'])['metadata']['namespace'] . " " . Yaml::parse($deployment['file'])['metadata']['name'], $dependency);
+                } elseif ($kind === 'DaemonSet') {
+                    $this->taskSpooler->addJob('Rollout DaemonSet ' . Yaml::parse($deployment['file'])['metadata']['name'], "kubectl rollout status daemonset --kubeconfig=" . $this->kubeconfig . " -n " . Yaml::parse($deployment['file'])['metadata']['name'], $dependency);
                 }
             }
         }

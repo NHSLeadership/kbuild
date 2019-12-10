@@ -171,7 +171,7 @@ class DockerFiles {
     
                     // Doesn't exist, create it
                     if ($repositoryExists === FALSE) {
-                        $createRepository = `export AWS_ACCESS_KEY_ID=$awsAccessKeyId && export AWS_SECRET_ACCESS_KEY=$awsSecretAccessKey && aws ecr create-repository --repository-name $app`;
+                        $createRepository = `export AWS_ACCESS_KEY_ID=$awsAccessKeyId && export AWS_SECRET_ACCESS_KEY=$awsSecretAccessKey && aws ecr create-repository --repository-name $app --region=$awsRegion`;
                     }
     
                     $repositoryBase = str_replace('https://', '', $repositoryBase);

@@ -39,6 +39,7 @@ class Create extends Command
         {--build= : The number of the build}
         {--cloud-provider=aws : Either aws or gcp}
         {--no-docker-build : Skips Docker build if set}
+        {--share-ecr}
         {--db-pause=60 : The amount of time in minutes to pause an Aurora instance after no activity}
         {--db-per-branch : Whether to use one database per branch}
         {--use-own-db-server : Whether to use a server explicitly spun up for this app}
@@ -309,7 +310,8 @@ class Create extends Command
                 'build'         =>  $this->option('build'),
                 'taskSpooler'   =>  $taskSpooler,
                 'cloudProvider' =>  $this->option('cloud-provider'),
-                'settings'      =>  $this->settings
+                'settings'      =>  $this->settings,
+                'shareECR'      =>  $this->option('share-ecr')
             )
         );
 
@@ -318,13 +320,15 @@ class Create extends Command
 
         // Check if we're building docker images on this run
         if (count($dockerFiles->asArray()) > 0) {
-            if ($this->option('no-docker-build') == FALSE) {
-                // Oooh, we are. Shiny.
+            if ($this->option('no-docker-build') == FALSE && $this->option('share-ecr') == FALSE) {
+                // Oooh, we are. Shiny. - build for single ECR repo
                 $dockerFiles->buildAndPush();
-            }
-            elseif ($this->option('no-docker-build') !== FALSE) {
-                // Just go through the motions
+            } elseif ($this->option('no-docker-build') !== FALSE) {
+                // Just go through the motions - we're not building
                 $dockerFiles->buildAndPush(false);
+            } elseif ($this->option('no-docker-build') == FALSE && $this->option('share-ecr') == TRUE) {
+                // Build images and push to a shared ECR repo
+                $dockerFiles->buildAndPush(true, true);
             }
         }
 

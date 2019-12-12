@@ -93,14 +93,21 @@ class DockerFiles {
     public function repositoryBase() {
         switch ($this->cloudProvider) {
             case 'aws':
-
-                $awsAccessKeyId = $this->settings['aws']['awsAccessKeyId'];
-                $awsSecretAccessKey = $this->settings['aws']['awsSecretAccessKey'];
-                $awsRegion = $this->settings['aws']['region'];
-
-                $dockerLogin = `export AWS_ACCESS_KEY_ID=$awsAccessKeyId && export AWS_SECRET_ACCESS_KEY=$awsSecretAccessKey && aws ecr get-login --region=$awsRegion --no-include-email`;
-                preg_match('/(https:\/\/.*)/', $dockerLogin, $repositoryBase);
-                $repositoryBase = str_replace('https://', '', $repositoryBase[1]);
+                
+                if($shareECR === false) {
+                    // We're using a single ECR
+                    $awsAccessKeyId = $this->settings['aws']['awsAccessKeyId'];
+                    $awsSecretAccessKey = $this->settings['aws']['awsSecretAccessKey'];
+                    $awsRegion = $this->settings['aws']['region'];
+                } elseif($shareECR !== false) {
+                    // We're using shared ECR for seperate QA/Prod accounts
+                    $awsAccessKeyId = $this->settings['aws']['ecrAccessKeyId'];
+                    $awsSecretAccessKey = $this->settings['aws']['ecrSecretAccessKey'];
+                    $awsRegion = $this->settings['aws']['region'];
+                }
+                    $dockerLogin = `export AWS_ACCESS_KEY_ID=$awsAccessKeyId && export AWS_SECRET_ACCESS_KEY=$awsSecretAccessKey && aws ecr get-login --region=$awsRegion --no-include-email`;
+                    preg_match('/(https:\/\/.*)/', $dockerLogin, $repositoryBase);
+                    $repositoryBase = str_replace('https://', '', $repositoryBase[1]);
 
                 break;
             
@@ -124,7 +131,7 @@ class DockerFiles {
         }
     }
 
-    public function buildAndPush($actuallyBuild = true) {
+    public function buildAndPush($actuallyBuild = true, $shareECR = false) {
 
         $files = $this->asArray();
         $buildDirectory = $this->buildDirectory;
@@ -139,10 +146,18 @@ class DockerFiles {
 
             switch ($provider) {
                 case 'aws':
-    
-                    $awsAccessKeyId = $this->settings['aws']['awsAccessKeyId'];
-                    $awsSecretAccessKey = $this->settings['aws']['awsSecretAccessKey'];
-                    $awsRegion = $this->settings['aws']['region'];
+
+                    if($shareECR === false) {
+                        // We're using a single ECR
+                        $awsAccessKeyId = $this->settings['aws']['awsAccessKeyId'];
+                        $awsSecretAccessKey = $this->settings['aws']['awsSecretAccessKey'];
+                        $awsRegion = $this->settings['aws']['region'];
+                    } else {
+                        // We're using shared ECR for seperate QA/Prod accounts
+                        $awsAccessKeyId = $this->settings['aws']['ecrAccessKeyId'];
+                        $awsSecretAccessKey = $this->settings['aws']['ecrSecretAccessKey'];
+                        $awsRegion = $this->settings['aws']['region'];
+                    }
 
                     $dockerLogin = `export AWS_ACCESS_KEY_ID=$awsAccessKeyId && export AWS_SECRET_ACCESS_KEY=$awsSecretAccessKey && aws ecr get-login --region=$awsRegion --no-include-email`;
                     preg_match('/-p (.*\ )/', $dockerLogin, $dockerPassword);
@@ -178,8 +193,10 @@ class DockerFiles {
     
                     $tag = $repositoryBase . '/' . $app . ':' . $dockerFile . '-' . $branch . '-' . $build;
                     $this->imageTags[$dockerFile] = $tag;
-                    if ($actuallyBuild === true) {
+                    if ($actuallyBuild === true && $shareECR === false) {
                         $taskSpooler->addJob('Dockerfile ' . $dockerFile, 'docker build -t ' . $tag . ' -f ' . $buildDirectory . '/k8s/docker/' . $dockerFile . ' . && docker push ' . $tag . ' && echo "Pushed to ' . $tag . '"');
+                    } elseif($actuallyBuild === true && $shareECR === true) {
+                        $taskSpooler->addJob("Dockerfile " . $dockerFile, "docker build -t " . $tag . " -f " . $buildDirectory . "/k8s/docker/" . $dockerFile . " . && docker push " . $tag . " && export AWS_ACCESS_KEY_ID=" . $awsAccessKeyId . " && export AWS_SECRET_ACCESS_KEY=" . $awsSecretAccessKey  . " && aws ecr set-repository-policy --repository-name " . $app . " --region " . $awsRegion . " --policy-text file:///etc/parallax/ecrpolicy.json  && echo 'Pushed to " . $tag . "'");
                     }
 
                     break;

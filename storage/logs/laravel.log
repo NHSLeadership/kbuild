@@ -1143,3 +1143,65 @@
 #11 /Users/lawrencedudley/Code/kbuild/kbuild(37): LaravelZero\\Framework\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #12 {main}
 "} 
+[2019-12-10 18:40:20] laravel.EMERGENCY: Unable to create configured logger. Using emergency logger. {"exception":"[object] (InvalidArgumentException(code: 0): Log [default] is not defined. at /Users/tomferguson/Development/kbuild-nhsla/vendor/laravel/framework/src/Illuminate/Log/LogManager.php:168)
+[stacktrace]
+#0 /Users/tomferguson/Development/kbuild-nhsla/vendor/laravel/framework/src/Illuminate/Log/LogManager.php(102): Illuminate\\Log\\LogManager->resolve('default')
+#1 /Users/tomferguson/Development/kbuild-nhsla/vendor/laravel/framework/src/Illuminate/Log/LogManager.php(90): Illuminate\\Log\\LogManager->get('default')
+#2 /Users/tomferguson/Development/kbuild-nhsla/vendor/laravel/framework/src/Illuminate/Log/LogManager.php(500): Illuminate\\Log\\LogManager->driver()
+#3 /Users/tomferguson/Development/kbuild-nhsla/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(114): Illuminate\\Log\\LogManager->error('Invalid charact...', Array)
+#4 /Users/tomferguson/Development/kbuild-nhsla/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(367): Illuminate\\Foundation\\Exceptions\\Handler->report(Object(ErrorException))
+#5 /Users/tomferguson/Development/kbuild-nhsla/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(124): Illuminate\\Foundation\\Console\\Kernel->reportException(Object(ErrorException))
+#6 /Users/tomferguson/Development/kbuild-nhsla/vendor/laravel-zero/framework/src/Kernel.php(77): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#7 /Users/tomferguson/Development/kbuild-nhsla/kbuild(37): LaravelZero\\Framework\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#8 {main}
+"} 
+[2019-12-10 18:40:20] laravel.ERROR: Invalid characters passed for attempted conversion, these have been ignored {"exception":"[object] (ErrorException(code: 0): Invalid characters passed for attempted conversion, these have been ignored at /Users/tomferguson/Development/kbuild-nhsla/vendor/zendframework/zend-text/src/Figlet/Figlet.php:1095)
+[stacktrace]
+#0 [internal function]: Illuminate\\Foundation\\Bootstrap\\HandleExceptions->handleError(8192, 'Invalid charact...', '/Users/tomfergu...', 1095, Array)
+#1 /Users/tomferguson/Development/kbuild-nhsla/vendor/zendframework/zend-text/src/Figlet/Figlet.php(1095): octdec('-0x0005\
+')
+#2 /Users/tomferguson/Development/kbuild-nhsla/vendor/zendframework/zend-text/src/Figlet/Figlet.php(308): Zend\\Text\\Figlet\\Figlet->_loadFont('/Users/tomfergu...')
+#3 /Users/tomferguson/Development/kbuild-nhsla/vendor/laravel-zero/framework/src/Components/Logo/FigletString.php(53): Zend\\Text\\Figlet\\Figlet->setFont('/Users/tomfergu...')
+#4 /Users/tomferguson/Development/kbuild-nhsla/vendor/laravel-zero/framework/src/Components/Logo/FigletString.php(41): LaravelZero\\Framework\\Components\\Logo\\FigletString->font('/Users/tomfergu...')
+#5 /Users/tomferguson/Development/kbuild-nhsla/vendor/laravel-zero/framework/src/Components/Logo/FigletString.php(35): LaravelZero\\Framework\\Components\\Logo\\FigletString->parseOptions(Array)
+#6 /Users/tomferguson/Development/kbuild-nhsla/vendor/laravel-zero/framework/src/Components/Logo/Provider.php(46): LaravelZero\\Framework\\Components\\Logo\\FigletString->__construct('Kbuild', Array)
+#7 /Users/tomferguson/Development/kbuild-nhsla/vendor/laravel/framework/src/Illuminate/Console/Application.php(149): LaravelZero\\Framework\\Components\\Logo\\Provider->LaravelZero\\Framework\\Components\\Logo\\{closure}(Object(Illuminate\\Console\\Application))
+#8 /Users/tomferguson/Development/kbuild-nhsla/vendor/laravel/framework/src/Illuminate/Console/Application.php(72): Illuminate\\Console\\Application->bootstrap()
+#9 /Users/tomferguson/Development/kbuild-nhsla/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(331): Illuminate\\Console\\Application->__construct(Object(LaravelZero\\Framework\\Application), Object(Illuminate\\Events\\Dispatcher), 'unreleased')
+#10 /Users/tomferguson/Development/kbuild-nhsla/vendor/laravel-zero/framework/src/Kernel.php(88): Illuminate\\Foundation\\Console\\Kernel->getArtisan()
+#11 /Users/tomferguson/Development/kbuild-nhsla/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(120): LaravelZero\\Framework\\Kernel->bootstrap()
+#12 /Users/tomferguson/Development/kbuild-nhsla/vendor/laravel-zero/framework/src/Kernel.php(77): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#13 /Users/tomferguson/Development/kbuild-nhsla/kbuild(37): LaravelZero\\Framework\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#14 {main}
+"} 
+[2019-12-10 18:40:26] laravel.EMERGENCY: Unable to create configured logger. Using emergency logger. {"exception":"[object] (InvalidArgumentException(code: 0): Log [default] is not defined. at /Users/tomferguson/Development/kbuild-nhsla/vendor/laravel/framework/src/Illuminate/Log/LogManager.php:168)
+[stacktrace]
+#0 /Users/tomferguson/Development/kbuild-nhsla/vendor/laravel/framework/src/Illuminate/Log/LogManager.php(102): Illuminate\\Log\\LogManager->resolve('default')
+#1 /Users/tomferguson/Development/kbuild-nhsla/vendor/laravel/framework/src/Illuminate/Log/LogManager.php(90): Illuminate\\Log\\LogManager->get('default')
+#2 /Users/tomferguson/Development/kbuild-nhsla/vendor/laravel/framework/src/Illuminate/Log/LogManager.php(500): Illuminate\\Log\\LogManager->driver()
+#3 /Users/tomferguson/Development/kbuild-nhsla/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(114): Illuminate\\Log\\LogManager->error('Invalid charact...', Array)
+#4 /Users/tomferguson/Development/kbuild-nhsla/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(367): Illuminate\\Foundation\\Exceptions\\Handler->report(Object(ErrorException))
+#5 /Users/tomferguson/Development/kbuild-nhsla/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(124): Illuminate\\Foundation\\Console\\Kernel->reportException(Object(ErrorException))
+#6 /Users/tomferguson/Development/kbuild-nhsla/vendor/laravel-zero/framework/src/Kernel.php(77): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#7 /Users/tomferguson/Development/kbuild-nhsla/kbuild(37): LaravelZero\\Framework\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#8 {main}
+"} 
+[2019-12-10 18:40:26] laravel.ERROR: Invalid characters passed for attempted conversion, these have been ignored {"exception":"[object] (ErrorException(code: 0): Invalid characters passed for attempted conversion, these have been ignored at /Users/tomferguson/Development/kbuild-nhsla/vendor/zendframework/zend-text/src/Figlet/Figlet.php:1095)
+[stacktrace]
+#0 [internal function]: Illuminate\\Foundation\\Bootstrap\\HandleExceptions->handleError(8192, 'Invalid charact...', '/Users/tomfergu...', 1095, Array)
+#1 /Users/tomferguson/Development/kbuild-nhsla/vendor/zendframework/zend-text/src/Figlet/Figlet.php(1095): octdec('-0x0005\
+')
+#2 /Users/tomferguson/Development/kbuild-nhsla/vendor/zendframework/zend-text/src/Figlet/Figlet.php(308): Zend\\Text\\Figlet\\Figlet->_loadFont('/Users/tomfergu...')
+#3 /Users/tomferguson/Development/kbuild-nhsla/vendor/laravel-zero/framework/src/Components/Logo/FigletString.php(53): Zend\\Text\\Figlet\\Figlet->setFont('/Users/tomfergu...')
+#4 /Users/tomferguson/Development/kbuild-nhsla/vendor/laravel-zero/framework/src/Components/Logo/FigletString.php(41): LaravelZero\\Framework\\Components\\Logo\\FigletString->font('/Users/tomfergu...')
+#5 /Users/tomferguson/Development/kbuild-nhsla/vendor/laravel-zero/framework/src/Components/Logo/FigletString.php(35): LaravelZero\\Framework\\Components\\Logo\\FigletString->parseOptions(Array)
+#6 /Users/tomferguson/Development/kbuild-nhsla/vendor/laravel-zero/framework/src/Components/Logo/Provider.php(46): LaravelZero\\Framework\\Components\\Logo\\FigletString->__construct('Kbuild', Array)
+#7 /Users/tomferguson/Development/kbuild-nhsla/vendor/laravel/framework/src/Illuminate/Console/Application.php(149): LaravelZero\\Framework\\Components\\Logo\\Provider->LaravelZero\\Framework\\Components\\Logo\\{closure}(Object(Illuminate\\Console\\Application))
+#8 /Users/tomferguson/Development/kbuild-nhsla/vendor/laravel/framework/src/Illuminate/Console/Application.php(72): Illuminate\\Console\\Application->bootstrap()
+#9 /Users/tomferguson/Development/kbuild-nhsla/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(331): Illuminate\\Console\\Application->__construct(Object(LaravelZero\\Framework\\Application), Object(Illuminate\\Events\\Dispatcher), 'unreleased')
+#10 /Users/tomferguson/Development/kbuild-nhsla/vendor/laravel-zero/framework/src/Kernel.php(88): Illuminate\\Foundation\\Console\\Kernel->getArtisan()
+#11 /Users/tomferguson/Development/kbuild-nhsla/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(120): LaravelZero\\Framework\\Kernel->bootstrap()
+#12 /Users/tomferguson/Development/kbuild-nhsla/vendor/laravel-zero/framework/src/Kernel.php(77): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#13 /Users/tomferguson/Development/kbuild-nhsla/kbuild(37): LaravelZero\\Framework\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#14 {main}
+"} 

@@ -320,14 +320,17 @@ class Create extends Command
 
         // Check if we're building docker images on this run
         if (count($dockerFiles->asArray()) > 0) {
-            if ($this->option('no-docker-build') == FALSE && $this->option('share-ecr') == FALSE) {
-                // Oooh, we are. Shiny. - build for single ECR repo
+            if ($this->option('no-docker-build') === FALSE && $this->option('share-ecr') === FALSE) {
+                // BUILD image - DEDI ECR account
                 $dockerFiles->buildAndPush();
-            } elseif ($this->option('no-docker-build') !== FALSE) {
-                // Just go through the motions - we're not building
-                $dockerFiles->buildAndPush(false);
-            } elseif ($this->option('no-docker-build') == FALSE && $this->option('share-ecr') == TRUE) {
-                // Build images and push to a shared ECR repo
+            } elseif ($this->option('no-docker-build') !== FALSE && $this->option('share-ecr') === FALSE) {
+                // DON'T build image - DEDI ECR account
+                $dockerFiles->buildAndPush(false, false);
+            } elseif ($this->option('no-docker-build') !== FALSE && $this->option('share-ecr') !== FALSE) {
+                // DON'T build image - SHARED ECR account
+                $dockerFiles->buildAndPush(false, true);
+            } elseif ($this->option('no-docker-build') === FALSE && $this->option('share-ecr') !== FALSE) {
+                // BUILD images - SHARED ECR account
                 $dockerFiles->buildAndPush(true, true);
             }
         }

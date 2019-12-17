@@ -81,7 +81,7 @@ class MySQL extends Command
                 }
 
                 // sanity check --engine-type
-                if($this->option('engine-type') != "provisioned" || $this->option('engine-type') != "serverless") {
+                if(($this->option('engine-type') != "provisioned") && ($this->option('engine-type') != "serverless")) {
                     echo "Your MySQL --server-type must be set to 'provisioned' or 'serverless'. Cya!\n";
                     exit(1);
                 }

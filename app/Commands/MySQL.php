@@ -80,6 +80,12 @@ class MySQL extends Command
                     $this->info($this->option('app') . ' uses shared db server');
                 }
 
+                // sanity check --engine-type
+                if($this->option('engine-type') != "provisioned" || $this->option('engine-type') != "serverless") {
+                    echo "Your MySQL --server-type must be set to 'provisioned' or 'serverless'. Cya!\n";
+                    exit(1);
+                }
+
                 $serverExists = false;
 
                 try {

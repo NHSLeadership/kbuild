@@ -349,7 +349,7 @@ class Create extends Command
             if ($this->option('db-per-branch') !== FALSE) {
                 $additional .= ' --db-per-branch';
             }
-            $taskSpooler->addJob('MySQL', "php /opt/parallax/kbuild/kbuild create:mysql --cloud-provider='" . $this->option('cloud-provider') . "' --app=" . $this->option('app') . " --branch=" . $this->option('branch') . " --environment=" . $this->option('environment') . " --settings=" . $this->option('settings') . " --kubeconfig=" . $this->option('kubeconfig') . " --db-pause=" . $this->option('db-pause') . $additional, $createNamespace);
+            $taskSpooler->addJob('MySQL', "php /opt/parallax/kbuild/kbuild create:mysql --engine-type=" . $this->settings['mysql']['enginetype'] . "--cloud-provider='" . $this->option('cloud-provider') . "' --app=" . $this->option('app') . " --branch=" . $this->option('branch') . " --environment=" . $this->option('environment') . " --settings=" . $this->option('settings') . " --kubeconfig=" . $this->option('kubeconfig') . " --db-pause=" . $this->option('db-pause') . $additional, $createNamespace);
 
         }
 

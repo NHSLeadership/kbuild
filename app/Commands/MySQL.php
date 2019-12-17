@@ -27,6 +27,7 @@ class MySQL extends Command
         {--branch= : The name of the app branch}
         {--environment= : The name of the environment}
         {--cloud-provider=aws : Either aws or gcp}
+        {--engine-type= : either serverless or provisioned}
         {--aws-vpc= : The VPC to use. Only used when cloud-provider is set to aws}
         {--db-pause=60 : The amount of time in minutes to pause an Aurora instance after no activity}
         {--db-per-branch : Whether to use one database per branch}
@@ -75,7 +76,7 @@ class MySQL extends Command
                 }
                 elseif ($this->option('use-own-db-server') === FALSE) {
                     // Don't use own database server
-                    $serverName = 'shared-serverless' . '-' . $this->option('environment');
+                    $serverName = 'shared-' . $this->option('engine-type') . '-' . $this->option('environment');
                     $this->info($this->option('app') . ' uses shared db server');
                 }
 
@@ -108,7 +109,7 @@ class MySQL extends Command
                             'DBClusterIdentifier' => $serverName,
                             'DBSubnetGroupName' => $this->settings['aws']['rdsSubnetGroup'],
                             'Engine' => 'aurora', // REQUIRED
-                            'EngineMode' => 'serverless',
+                            'EngineMode' => $this->option('engine-type'),
                             'MasterUserPassword' => $masterPassword,
                             'MasterUsername' => 'master',
                             'ScalingConfiguration' => [

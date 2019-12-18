@@ -31,7 +31,7 @@ class Create extends Command
      *
      * @var string
      */
-    protected $signature = 'build 
+    protected $signature = 'build
         {--kubeconfig=~/.kube/config : The path to the kubeconfig file}
         {--app= : The name of the app}
         {--branch= : The name of the app branch}
@@ -39,7 +39,8 @@ class Create extends Command
         {--build= : The number of the build}
         {--cloud-provider=aws : Either aws or gcp}
         {--no-docker-build : Skips Docker build if set}
-        {--share-ecr}
+        {--share-ecr : Specify this if you need to use a single shared ECR repo }
+        {--namespace : Specify this if you wish to override the default namespace logic }
         {--db-pause=60 : The amount of time in minutes to pause an Aurora instance after no activity}
         {--db-per-branch : Whether to use one database per branch}
         {--use-own-db-server : Whether to use a server explicitly spun up for this app}
@@ -65,13 +66,22 @@ class Create extends Command
         $buildDirectory = getcwd();
         $this->info("Building from $buildDirectory");
 
+        // Are we overriding the namespace logic?
+        if ($this->option('namespace') !== FALSE) {
+            // default to app-environment
+            $buildNamespace = $this->option('app') . '-' . $this->option('environment');
+        } else {
+            // use the defined namespace from cli
+            $buildNamespace = $this->option('namespace');
+        }
+
         // Load in kbuild yaml
         if (file_exists($buildDirectory . '/k8s/kbuild.yaml')) {
             // Do a find and replace on some bits
             $kbuild = file_get_contents($buildDirectory . '/k8s/kbuild.yaml');
             $kbuild = str_replace('{{ app }}', $this->option('app'), $kbuild);
             $kbuild = str_replace('{{ environment }}', $this->option('environment'), $kbuild);
-            $kbuild = str_replace('{{ namespace }}', $this->option('app') . '-' . $this->option('environment'), $kbuild);
+            $kbuild = str_replace('{{ namespace }}', $buildNamespace, $kbuild);
             $kbuild = str_replace('{{ branch }}', $this->option('branch'), $kbuild);
             $kbuild = str_replace('{{ build }}', $this->option('build'), $kbuild);
             $this->kbuild = Yaml::parse($kbuild);
@@ -336,7 +346,7 @@ class Create extends Command
         }
 
         // Configure the namespace first as subsequent steps depend on it
-        $createNamespace = $taskSpooler->addJob('Create Namespace', "php /opt/parallax/kbuild/kbuild create:namespace --namespace='" . $this->option('app') . '-' . $this->option('environment') . "' --kubeconfig='" . $this->option('kubeconfig') . "' --settings='" . $this->option('settings') . "'");
+        $createNamespace = $taskSpooler->addJob('Create Namespace', "php /opt/parallax/kbuild/kbuild create:namespace --namespace='" . $buildNamespace . "' --kubeconfig='" . $this->option('kubeconfig') . "' --settings='" . $this->option('settings') . "'");
 
         // Add a job to handle MySQL if settings->mysql is set
         if (isset($this->settings['mysql'])) {
@@ -356,7 +366,7 @@ class Create extends Command
         // IAM and Object Storage
         // If AWS account id is provided, sort an IAM user and buckets
         if (isset($this->settings['aws']['accountId'])) {
-            $createIam = $taskSpooler->addJob('IAM User', "php /opt/parallax/kbuild/kbuild create:iam --iam-account='" . $this->option('app') . '-' . $this->option('environment') . "' --kubeconfig='" . $this->option('kubeconfig') . "' --settings='" . $this->option('settings') . "'" . " --namespace='" . $this->option('app') . '-' . $this->option('environment') . "'", $createNamespace);
+            $createIam = $taskSpooler->addJob('IAM User', "php /opt/parallax/kbuild/kbuild create:iam --iam-account='" . $this->option('app') . '-' . $this->option('environment') . "' --kubeconfig='" . $this->option('kubeconfig') . "' --settings='" . $this->option('settings') . "'" . " --namespace='" . $buildNamespace . "'", $createNamespace);
 
             // For each S3 bucket requested in kbuild.yaml add a creation job
             if (isset($this->kbuild['aws']['s3']) && count($this->kbuild['aws']['s3']) > 0) {
@@ -375,6 +385,7 @@ class Create extends Command
                 'branch'        => $this->option('branch'),
                 'build'         => $this->option('build'),
                 'environment'   => $this->option('environment'),
+                'namespace'     => $buildNamespace,
                 'images'        => $dockerFiles->imageTags,
                 'kbuild'        => $this->kbuild,
                 'taskSpooler'   => $taskSpooler,

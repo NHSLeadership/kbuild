@@ -38,7 +38,7 @@ class YamlFiles {
         $this->settings['environment'] = $args['environment'];
         $this->images = $args['images'];
         $this->kbuild = $args['kbuild'];
-        $this->settings['namespace'] = $args['app'] . '-' . $args['environment'];
+        $this->settings['namespace'] = $args['namespace'];
         $this->taskSpooler = $args['taskSpooler'];
         $this->kubeconfig = $args['kubeconfig'];
         $this->environmentVariables = $args['environmentVariables'];

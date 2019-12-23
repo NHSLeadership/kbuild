@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5b5900d488c6e1d07014b2dd476a68e3",
+    "content-hash": "983fa23e226455b03fb53db260f972b2",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -2515,16 +2515,16 @@
         },
         {
             "name": "spatie/async",
-            "version": "0.0.4",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/async.git",
-                "reference": "8b76df4ab77dcf7680eee4b83353d038e28f92f7"
+                "reference": "f20f296eb19887e8f9b6b519aeb3a5fe85903eda"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/async/zipball/8b76df4ab77dcf7680eee4b83353d038e28f92f7",
-                "reference": "8b76df4ab77dcf7680eee4b83353d038e28f92f7",
+                "url": "https://api.github.com/repos/spatie/async/zipball/f20f296eb19887e8f9b6b519aeb3a5fe85903eda",
+                "reference": "f20f296eb19887e8f9b6b519aeb3a5fe85903eda",
                 "shasum": ""
             },
             "require": {
@@ -2536,6 +2536,10 @@
                 "larapack/dd": "^1.1",
                 "phpunit/phpunit": "^6.0",
                 "symfony/stopwatch": "^4.0"
+            },
+            "suggest": {
+                "ext-pcntl": "Required to use async processes",
+                "ext-posix": "Required to use async processes"
             },
             "type": "library",
             "autoload": {
@@ -2564,7 +2568,7 @@
                 "async",
                 "spatie"
             ],
-            "time": "2018-01-29T15:09:29+00:00"
+            "time": "2019-09-30T07:00:01+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",

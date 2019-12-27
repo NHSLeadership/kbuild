@@ -2468,22 +2468,22 @@
         },
         {
             "name": "spatie/async",
-            "version": "1.1.0",
+            "version": "1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/async.git",
-                "reference": "f20f296eb19887e8f9b6b519aeb3a5fe85903eda"
+                "reference": "23b1e855310da03f6dc2accf9f41e27c7fa41481"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/async/zipball/f20f296eb19887e8f9b6b519aeb3a5fe85903eda",
-                "reference": "f20f296eb19887e8f9b6b519aeb3a5fe85903eda",
+                "url": "https://api.github.com/repos/spatie/async/zipball/23b1e855310da03f6dc2accf9f41e27c7fa41481",
+                "reference": "23b1e855310da03f6dc2accf9f41e27c7fa41481",
                 "shasum": ""
             },
             "require": {
                 "opis/closure": "^3.0",
                 "php": "^7.1",
-                "symfony/process": "^3.3 || ^4.0"
+                "symfony/process": "^3.3 || ^4.0 || ^5.0"
             },
             "require-dev": {
                 "larapack/dd": "^1.1",
@@ -2521,7 +2521,7 @@
                 "async",
                 "spatie"
             ],
-            "time": "2019-09-30T07:00:01+00:00"
+            "time": "2019-12-24T11:06:08+00:00"
         },
         {
             "name": "symfony/console",

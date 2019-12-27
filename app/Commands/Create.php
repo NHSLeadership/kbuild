@@ -66,10 +66,18 @@ class Create extends Command
         $buildDirectory = getcwd();
         $this->info("Building from $buildDirectory");
 
+        // Load in settings
+        $this->settings = Yaml::parseFile($this->option('settings'));
+
         // Are we overriding the namespace logic?
-        if ($this->option('namespace') !== FALSE) {
-            // default to app-environment
-            $buildNamespace = $this->option('app') . '-' . $this->option('environment');
+        if ($this->option('namespace') === FALSE) {
+            // if we dont explicitly set namespace, check cluster setting
+            if($this->settings['seperateClusters'] === true) {
+                $buildNamespace = $this->option('app');
+            } else {
+                // default to app-environment
+                $buildNamespace = $this->option('app') . '-' . $this->option('environment');
+            }
         } else {
             // use the defined namespace from cli
             $buildNamespace = $this->option('namespace');
@@ -179,10 +187,7 @@ class Create extends Command
         }
         else {
             $this->info('All YAML files in k8s/yaml have passed initial validation');
-        }       
-
-        // Load in settings
-        $this->settings = Yaml::parseFile($this->option('settings'));
+        }
 
         // Check that options have been passed
         $toCheck = array('app', 'branch', 'build', 'environment');

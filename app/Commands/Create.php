@@ -39,8 +39,7 @@ class Create extends Command
         {--build= : The number of the build}
         {--cloud-provider=aws : Either aws or gcp}
         {--no-docker-build : Skips Docker build if set}
-        {--share-ecr : Specify this if you need to use a single shared ECR repo }
-        {--namespace : Specify this if you wish to override the default namespace logic }
+        {--namespace : Specify this if you wish to override namespace logic }
         {--db-pause=60 : The amount of time in minutes to pause an Aurora instance after no activity}
         {--db-per-branch : Whether to use one database per branch}
         {--use-own-db-server : Whether to use a server explicitly spun up for this app}
@@ -72,7 +71,7 @@ class Create extends Command
         // Are we overriding the namespace logic?
         if ($this->option('namespace') === FALSE) {
             // if we dont explicitly set namespace, check cluster setting
-            if($this->settings['seperateClusters'] === true) {
+            if($this->settings['separateClusters'] === true) {
                 $buildNamespace = $this->option('app');
             } else {
                 // default to app-environment
@@ -81,6 +80,17 @@ class Create extends Command
         } else {
             // use the defined namespace from cli
             $buildNamespace = $this->option('namespace');
+        }
+
+        // check if we're in separate clusters
+        if ($this->settings['aws']['separateClusters'] === true) {
+            // we might have a single shared ECR
+            if(isset($this->settings['aws']['ecrAccessKeyId'])) {
+                // we're using shared clusters
+                $shareECR = true;
+            } else {
+                $shareECR = false;
+            }
         }
 
         // Load in kbuild yaml
@@ -326,7 +336,7 @@ class Create extends Command
                 'taskSpooler'   =>  $taskSpooler,
                 'cloudProvider' =>  $this->option('cloud-provider'),
                 'settings'      =>  $this->settings,
-                'shareECR'      =>  $this->option('share-ecr')
+                'shareECR'      =>  $shareECR
             )
         );
 
@@ -335,16 +345,16 @@ class Create extends Command
 
         // Check if we're building docker images on this run
         if (count($dockerFiles->asArray()) > 0) {
-            if ($this->option('no-docker-build') === FALSE && $this->option('share-ecr') === FALSE) {
+            if ($this->option('no-docker-build') === FALSE && $shareECR === FALSE) {
                 // BUILD image - DEDI ECR account
                 $dockerFiles->buildAndPush();
-            } elseif ($this->option('no-docker-build') !== FALSE && $this->option('share-ecr') === FALSE) {
+            } elseif ($this->option('no-docker-build') !== FALSE && $shareECR === FALSE) {
                 // DON'T build image - DEDI ECR account
                 $dockerFiles->buildAndPush(false, false);
-            } elseif ($this->option('no-docker-build') !== FALSE && $this->option('share-ecr') !== FALSE) {
+            } elseif ($this->option('no-docker-build') !== FALSE && $shareECR !== FALSE) {
                 // DON'T build image - SHARED ECR account
                 $dockerFiles->buildAndPush(false, true);
-            } elseif ($this->option('no-docker-build') === FALSE && $this->option('share-ecr') !== FALSE) {
+            } elseif ($this->option('no-docker-build') === FALSE && $shareECR !== FALSE) {
                 // BUILD images - SHARED ECR account
                 $dockerFiles->buildAndPush(true, true);
             }

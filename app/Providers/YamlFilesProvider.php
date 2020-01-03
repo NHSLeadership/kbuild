@@ -25,6 +25,9 @@ class YamlFiles {
     protected $returnYamlContents;
     protected $kbuild;
     protected $ttl;
+    protected $httpAuth;
+    protected $ldapMw;
+    protected $ldapNs;
     protected $environmentVariables;
 
     public function __construct($args) {
@@ -43,7 +46,9 @@ class YamlFiles {
         $this->kubeconfig = $args['kubeconfig'];
         $this->environmentVariables = $args['environmentVariables'];
         $this->ttl = $args['ttl'];
-
+        $this->httpAuth = $args['httpAuth'];
+        $this->ldapMw = $args['ldapMw'];
+        $this->ldapNs = $args['ldapNs'];
         $yamlFiles = scandir($this->yamlDirectory);
         $this->yamlFiles = $yamlFiles;
         $this->parsedYamlContents = array();
@@ -119,6 +124,19 @@ class YamlFiles {
                     // Now push in the vars
                     foreach ($this->environmentVariables as $environmentKey => $environmentValue) {
                         array_push($contentsArray['spec']['jobTemplate']['spec']['template']['spec']['containers'][$containerKey]['env'],  array('name' => $environmentKey, 'value' => $environmentValue));
+                    }
+                }
+                $contents = Yaml::dump($contentsArray, 50);
+            }
+
+            // if we ask for HTTP Auth and there's an IngressRoute, add a Middleware and apply it
+            if (isset($this->httpAuth) && $this->httpAuth !== FALSE && $contentsArray['kind'] === 'IngressRoute') {
+                if(isset($contentsArray['spec']['tls']['secretName'])) {
+                    foreach($contentsArray['spec']['routes'] as $routeKey => $route) {
+                        if(!isset($route['middlewares'])) {
+                            $contentsArray['spec']['routes'][$routeKey]['middlewares'] = array();
+                        }
+                        array_push($contentsArray['spec']['routes'][$routeKey]['middlewares'], array('name' => $this->ldapMw, 'namespace' => $this->ldapNs));
                     }
                 }
                 $contents = Yaml::dump($contentsArray, 50);

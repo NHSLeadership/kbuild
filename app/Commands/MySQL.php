@@ -26,6 +26,7 @@ class MySQL extends Command
         {--app= : The name of the app}
         {--branch= : The name of the app branch}
         {--environment= : The name of the environment}
+        {--namespace= : The namespace of the app }
         {--cloud-provider=aws : Either aws or gcp}
         {--engine-type= : either serverless or provisioned}
         {--aws-vpc= : The VPC to use. Only used when cloud-provider is set to aws}
@@ -198,7 +199,7 @@ class MySQL extends Command
             'kind'          => 'Secret',
             'metadata'      => array(
                 'name'          => 'mysql-credentials-' . $this->option('branch'),
-                'namespace'     => $this->option('app') . '-' . $this->option('environment'),
+                'namespace'     => $this->option('namespace'),
             ),
             'type'          => 'Opaque',
             'stringData'    => array(
@@ -219,7 +220,7 @@ class MySQL extends Command
 
         // Run a pod in Kubernetes to create the db and user
         $run = "mysql -h $databaseEndpoint -u master --password=$masterPassword -e 'CREATE DATABASE IF NOT EXISTS `$databaseName` DEFAULT CHARACTER SET = utf8 DEFAULT COLLATE = utf8_general_ci;'";
-        $command = 'kubectl -n ' . $this->option('app') . '-' . $this->option('environment') . ' --kubeconfig=' . $this->option('kubeconfig') . ' run --rm -i --tty mysql-' . $this->option('branch') . ' --image=mysql:5.6 --restart=Never -- ' . $run;
+        $command = 'kubectl -n ' . $this->option('namespace') . ' --kubeconfig=' . $this->option('kubeconfig') . ' run --rm -i --tty mysql-' . $this->option('branch') . ' --image=mysql:5.6 --restart=Never -- ' . $run;
         system($command, $exit);
         if ($exit !== 0) {
             echo "Error creating MySQL database\n";
@@ -227,7 +228,7 @@ class MySQL extends Command
         }
         $this->info('Created MySQL Database');
         $run = "mysql -h $databaseEndpoint -u master --password=$masterPassword -e 'GRANT ALL ON `$databaseName`.* TO \"$databaseUser\"@\"%\" IDENTIFIED BY \"$databasePassword\";'";
-        $command = 'kubectl -n ' . $this->option('app') . '-' . $this->option('environment') . ' --kubeconfig=' . $this->option('kubeconfig') . ' run --rm -i --tty mysql-' . $this->option('branch') . ' --image=mysql:5.6 --restart=Never -- ' . $run;
+        $command = 'kubectl -n ' . $this->option('namespace') . ' --kubeconfig=' . $this->option('kubeconfig') . ' run --rm -i --tty mysql-' . $this->option('branch') . ' --image=mysql:5.6 --restart=Never -- ' . $run;
         system($command, $exit);
         if ($exit !== 0) {
             echo "Error creating MySQL user\n";

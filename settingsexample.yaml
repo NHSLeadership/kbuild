@@ -1,0 +1,28 @@
+httpauth:
+  salt: <salt string>
+  ldapMiddlewareName: <name of LDAP Middleware>
+  ldapMiddlewareNs: <Name of Namespace hosting Middleware>
+aws:
+  vpcId: <aws vpc id>
+  region: <aws vpc region>
+  accountId: '<aws numerical account id>'
+  availabilityZones:
+    - eu-west-2a
+    - eu-west-2b
+    - eu-west-2c
+  rdsSecurityGroups:
+    - rds-production
+  rdsSubnetGroup: rds-production
+  awsAccessKeyId: <aws account access key id>
+  awsSecretAccessKey: <aws account access key secret>
+  separateClusters: true (true/false if you are using a single cluster for multiple environments)
+  ecrAccessKeyId: <aws access key ID for accessing ECR>
+  ecrSecretAccessKey: <aws access key secret for accessing ECR>
+mysql:
+  enginetype: 'serverless' (serverless/provisioned depending on your RDS type in AWS)
+  salt: '<mysql password salt>'
+  1password:
+    masterPassword: <1password master password>
+    secretKey: <1password secret key>
+    url: <1password url e.g. nhsleadership>
+    email: <1password account email address>

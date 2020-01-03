@@ -39,6 +39,7 @@ class Create extends Command
         {--build= : The number of the build}
         {--cloud-provider=aws : Either aws or gcp}
         {--no-docker-build : Skips Docker build if set}
+        {--auth= : ldap or something else, adds http auth to your deployment}
         {--namespace : Specify this if you wish to override namespace logic }
         {--db-pause=60 : The amount of time in minutes to pause an Aurora instance after no activity}
         {--db-per-branch : Whether to use one database per branch}
@@ -71,7 +72,7 @@ class Create extends Command
         // Are we overriding the namespace logic?
         if ($this->option('namespace') === FALSE) {
             // if we dont explicitly set namespace, check cluster setting
-            if($this->settings['separateClusters'] === true) {
+            if($this->settings['aws']['separateClusters'] === true) {
                 $buildNamespace = $this->option('app');
             } else {
                 // default to app-environment
@@ -91,6 +92,12 @@ class Create extends Command
             } else {
                 $shareECR = false;
             }
+        }
+
+        if($this->option('auth') !== FALSE) {
+            $httpAuth = $this->options('auth');
+        } else {
+            $httpAuth = FALSE;
         }
 
         // Load in kbuild yaml
@@ -374,7 +381,7 @@ class Create extends Command
             if ($this->option('db-per-branch') !== FALSE) {
                 $additional .= ' --db-per-branch';
             }
-            $taskSpooler->addJob('MySQL', "php /opt/parallax/kbuild/kbuild create:mysql --engine-type=" . $this->settings['mysql']['enginetype'] . " --cloud-provider='" . $this->option('cloud-provider') . "' --app=" . $this->option('app') . " --branch=" . $this->option('branch') . " --environment=" . $this->option('environment') . " --settings=" . $this->option('settings') . " --kubeconfig=" . $this->option('kubeconfig') . " --db-pause=" . $this->option('db-pause') . $additional, $createNamespace);
+            $taskSpooler->addJob('MySQL', "php /opt/parallax/kbuild/kbuild create:mysql --namespace=" . $buildNamespace ." --engine-type=" . $this->settings['mysql']['enginetype'] . " --cloud-provider='" . $this->option('cloud-provider') . "' --app=" . $this->option('app') . " --branch=" . $this->option('branch') . " --environment=" . $this->option('environment') . " --settings=" . $this->option('settings') . " --kubeconfig=" . $this->option('kubeconfig') . " --db-pause=" . $this->option('db-pause') . $additional, $createNamespace);
 
         }
 
@@ -386,7 +393,7 @@ class Create extends Command
             // For each S3 bucket requested in kbuild.yaml add a creation job
             if (isset($this->kbuild['aws']['s3']) && count($this->kbuild['aws']['s3']) > 0) {
                 foreach ($this->kbuild['aws']['s3'] as $key => $bucket) {
-                    $taskSpooler->addJob('S3 Bucket ' . $bucket, "php /opt/parallax/kbuild/kbuild create:s3bucket --iam-grantee='" . $this->option('app') . '-' . $this->option('environment') . "' --settings='" . $this->option('settings') . "'" . " --bucket-name='" . $bucket . "'", $createIam);
+                    $taskSpooler->addJob('S3 Bucket ' . $bucket, "php /opt/parallax/kbuild/kbuild create:s3bucket --namespace=". $buildNamespace ." --iam-grantee='" . $this->option('app') . '-' . $this->option('environment') . "' --settings='" . $this->option('settings') . "'" . " --bucket-name='" . $bucket . "'", $createIam);
                 }
             }
         }
@@ -406,7 +413,10 @@ class Create extends Command
                 'taskSpooler'   => $taskSpooler,
                 'kubeconfig'    => $this->option('kubeconfig'),
                 'environmentVariables'  => $environmentVariables,
-                'ttl'           => $ttl
+                'ttl'           => $ttl,
+                'httpAuth'      => $httpAuth,
+                'ldapMw'        => $this->settings['httpauth']['ldapMiddlewareName'],
+                'ldapNs'        => $this->settings['httpauth']['ldapMiddlewareNs']
             )
         );
 
@@ -435,9 +445,8 @@ class Create extends Command
         $yamlFiles->queue('PodDisruptionBudget');
         $yamlFiles->queue('CronJob');
 
-        
         $taskSpooler->wait();
-
+        
         // After Deploy
         if (isset($this->kbuild['afterDeploy'])) {
             $afterDeploy = new AfterDeploy(

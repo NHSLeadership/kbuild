@@ -101,9 +101,9 @@ class Create extends Command
         }
 
         // Load in kbuild yaml
-        if (file_exists($buildDirectory . '/k8s/kbuild.yaml')) {
+        if (file_exists($buildDirectory . '/kbuild/kbuild.yaml')) {
             // Do a find and replace on some bits
-            $kbuild = file_get_contents($buildDirectory . '/k8s/kbuild.yaml');
+            $kbuild = file_get_contents($buildDirectory . '/kbuild/kbuild.yaml');
             $kbuild = str_replace('{{ app }}', $this->option('app'), $kbuild);
             $kbuild = str_replace('{{ environment }}', $this->option('environment'), $kbuild);
             $kbuild = str_replace('{{ namespace }}', $buildNamespace, $kbuild);
@@ -130,7 +130,7 @@ class Create extends Command
         }
 
 
-        $YamlDirFiles = preg_grep('~\.yaml$~', scandir($buildDirectory . '/k8s/yaml/'));
+        $YamlDirFiles = preg_grep('~\.yaml$~', scandir($buildDirectory . '/kbuild/yaml/'));
         $yamlLintOutput = array();
         $yamlPasses = TRUE;
 
@@ -148,7 +148,7 @@ class Create extends Command
         //dd($yamlLintConfig);
 
         foreach ($YamlDirFiles as $key => $YamlDirFile) {
-            exec('yamllint -d "' . $yamlLintConfig . '" ' . $buildDirectory . '/k8s/yaml/' .  $YamlDirFile, $yamlLintOutput[$key]['errors'], $yamlLintOutput[$key]['exitCode']);
+            exec('yamllint -d "' . $yamlLintConfig . '" ' . $buildDirectory . '/kbuild/yaml/' .  $YamlDirFile, $yamlLintOutput[$key]['errors'], $yamlLintOutput[$key]['exitCode']);
             $yamlLintOutput[$key]['filename'] = $YamlDirFile;
         }
 
@@ -180,7 +180,7 @@ class Create extends Command
             }
         }
 
-        $this->info('Linting YAML files in k8s/yaml');
+        $this->info('Linting YAML files in kbuild/yaml');
 
         foreach ($yamlLintOutput as $key => $yamlLintFile) {
             if (isset($yamlLintFile['parsedErrors'])) {
@@ -203,7 +203,7 @@ class Create extends Command
             exit(1);
         }
         else {
-            $this->info('All YAML files in k8s/yaml have passed initial validation');
+            $this->info('All YAML files in kbuild/yaml have passed initial validation');
         }
 
         // Check that options have been passed
@@ -402,7 +402,7 @@ class Create extends Command
 
         $yamlFiles = new YamlFiles(
             array(
-                'yamlDirectory' => $buildDirectory . '/k8s/yaml',
+                'yamlDirectory' => $buildDirectory . '/kbuild/yaml',
                 'app'           => $this->option('app'),
                 'branch'        => $this->option('branch'),
                 'build'         => $this->option('build'),

@@ -28,11 +28,11 @@ class TaskSpoolerInstance
 
 
     // Add jobs to your taskspool. Returns the id of the job:
-    $jobId = $taskSpooler->addJob('Step One', 'docker build --no-cache -t test -f k8s/docker/nginx-php .');
+    $jobId = $taskSpooler->addJob('Step One', 'docker build --no-cache -t test -f kbuild/docker/nginx-php .');
 
 
     // Add a job to your taskspool that should only run when the id of another job has completed:
-    $taskSpooler->addJob('Step Five', 'docker build --no-cache -t test -f k8s/docker/nginx-php .', $jobId);
+    $taskSpooler->addJob('Step Five', 'docker build --no-cache -t test -f kbuild/docker/nginx-php .', $jobId);
 
     // Wait for the queue to complete:
     $taskSpooler->wait();

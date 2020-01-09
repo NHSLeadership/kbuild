@@ -45,13 +45,13 @@ class DockerFiles {
     }
 
     public function build($dockerFile) {
-        exec('docker build -t test -f ' . $this->buildDirectory . '/k8s/docker/' . $dockerFile . ' ' . $this->buildDirectory);
+        exec('docker build -t test -f ' . $this->buildDirectory . '/kbuild/docker/' . $dockerFile . ' ' . $this->buildDirectory);
     }
 
     public function asArray() {
-        // Find all docker files in k8s/docker that we need to build
-        if (file_exists($this->buildDirectory . '/k8s/docker/')) {
-            $dockerFiles = scandir($this->buildDirectory . '/k8s/docker/');
+        // Find all docker files in kbuild/docker that we need to build
+        if (file_exists($this->buildDirectory . '/kbuild/docker/')) {
+            $dockerFiles = scandir($this->buildDirectory . '/kbuild/docker/');
         }
 
         else {
@@ -194,9 +194,9 @@ class DockerFiles {
                     $tag = $repositoryBase . '/' . $app . ':' . $dockerFile . '-' . $branch . '-' . $build;
                     $this->imageTags[$dockerFile] = $tag;
                     if ($actuallyBuild === true && $shareECR === false) {
-                        $taskSpooler->addJob('Dockerfile ' . $dockerFile, 'docker build -t ' . $tag . ' -f ' . $buildDirectory . '/k8s/docker/' . $dockerFile . ' . && docker push ' . $tag . ' && echo "Pushed to ' . $tag . '"');
+                        $taskSpooler->addJob('Dockerfile ' . $dockerFile, 'docker build -t ' . $tag . ' -f ' . $buildDirectory . '/kbuild/docker/' . $dockerFile . ' . && docker push ' . $tag . ' && echo "Pushed to ' . $tag . '"');
                     } elseif($actuallyBuild === true && $shareECR === true) {
-                        $taskSpooler->addJob("Dockerfile " . $dockerFile, "docker build -t " . $tag . " -f " . $buildDirectory . "/k8s/docker/" . $dockerFile . " . && docker push " . $tag . " && export AWS_ACCESS_KEY_ID=" . $awsAccessKeyId . " && export AWS_SECRET_ACCESS_KEY=" . $awsSecretAccessKey  . " && aws ecr set-repository-policy --repository-name " . $app . " --region " . $awsRegion . " --policy-text file:///etc/parallax/ecrpolicy.json  && echo 'Pushed to " . $tag . "'");
+                        $taskSpooler->addJob("Dockerfile " . $dockerFile, "docker build -t " . $tag . " -f " . $buildDirectory . "/kbuild/docker/" . $dockerFile . " . && docker push " . $tag . " && export AWS_ACCESS_KEY_ID=" . $awsAccessKeyId . " && export AWS_SECRET_ACCESS_KEY=" . $awsSecretAccessKey  . " && aws ecr set-repository-policy --repository-name " . $app . " --region " . $awsRegion . " --policy-text file:///etc/parallax/ecrpolicy.json  && echo 'Pushed to " . $tag . "'");
                     }
 
                     break;

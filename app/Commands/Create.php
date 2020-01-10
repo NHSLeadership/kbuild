@@ -94,8 +94,8 @@ class Create extends Command
             }
         }
 
-        if($this->option('auth') !== FALSE) {
-            $httpAuth = $this->options('auth');
+        if( (strtolower($this->option('auth')) === "ldap") || (strtolower($this->option('auth')) === "basic") ) {
+            $httpAuth = $this->option('auth');
         } else {
             $httpAuth = FALSE;
         }

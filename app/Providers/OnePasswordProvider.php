@@ -16,6 +16,7 @@ use PurplePixie\PhpDns\DNSQuery;
 
 class OnePassword {
 
+    protected $singleVault;
     protected $masterPassword;
     protected $url;
     protected $email;
@@ -26,6 +27,7 @@ class OnePassword {
 
     public function __construct($args) {
 
+        $this->singleVault = $args['singleVault'];
         $this->masterPassword = $args['masterPassword'];
         $this->url = $args['url'];
         $this->email = $args['email'];
@@ -44,16 +46,24 @@ class OnePassword {
         // Ensure vault exists
         $vaults = exec("op list vaults " . $this->url . " --session=" . $this->token);
         $vaults = json_decode($vaults, TRUE);
+
+        // are we in single or multi vault?
+        if ($this->singleVault !== FALSE) {
+          $vaultName = $this->singleVault;
+        } else {
+          $vaultName = $this->app;
+        }
+
         $exists = false;
         foreach ($vaults as $key => $vault) {
-            if ($vault['name'] === $this->app) {
+            if ($vault['name'] === $vaultName) {
                 $exists = true;
                 $this->vault = $vault['uuid'];
             }
         }
         // Create vault if it doesn't exist
         if ($exists === false) {
-            $this->vault = json_decode(exec("op create vault " . $this->app . " --session=" . $this->token))->uuid;
+            $this->vault = json_decode(exec("op create vault " . $vaultName . " --session=" . $this->token))->uuid;
         }
     }
 
@@ -155,27 +165,30 @@ class OnePassword {
             exec("op create item database $onePasswordEncoded --vault=" . $this->vault . " --title='$name'" . " --session=" . $this->token);
         }
 
-        // Grant access based on who has committed
-        $users = $this->getUsers();
+        // Grant access based on who has committed unless were single vault
+        if (!isset($this->singleVault)) {
 
-        exec("git log --pretty='%ae' | sort | uniq", $committers, $exit);
-        if ($exit !== 0) {
-            echo "There was a problem listing git commits";
-            exit(2);
+          $users = $this->getUsers();
+
+          exec("git log --pretty='%ae' | sort | uniq", $committers, $exit);
+          if ($exit !== 0) {
+              echo "There was a problem listing git commits";
+              exit(2);
+          }
+
+          $return = 'Added ';
+
+          // Now cycle through the committers and see if they match up to a 1password user
+          foreach ($committers as $key => $committerEmail) {
+              foreach ($users as $key => $user) {
+                  if ($committerEmail === $user['email']) {
+                      // They match! Add them to the vault
+                      exec("op add " . $user['uuid'] . " " . $this->vault . " --session=" . $this->token);
+                      $return .= $committerEmail . ' ';
+                  }
+            echo $return;
+              }
+          }
         }
-
-        $return = 'Added ';
-
-        // Now cycle through the committers and see if they match up to a 1password user
-        foreach ($committers as $key => $committerEmail) {
-            foreach ($users as $key => $user) {
-                if ($committerEmail === $user['email']) {
-                    // They match! Add them to the vault
-                    exec("op add " . $user['uuid'] . " " . $this->vault . " --session=" . $this->token);
-                    $return .= $committerEmail . ' ';
-                }
-            }
-        }
-        echo $return;
     }
 }

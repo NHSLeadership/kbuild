@@ -236,9 +236,16 @@ class MySQL extends Command
         }
         $this->info('Created MySQL Database and User');
 
+        if(isset($this->settings['mysql']['1password']['singleVault'])) {
+          $singleVault = $this->settings['mysql']['1password']['singleVault'];
+        } else {
+          $singleVault = FALSE;
+        }
+
         if (isset($this->settings['mysql']['1password'])) {
             // Initialise OnePassword
             $onePassword = new OnePassword([
+                'singleVault'       => $singleVault,
                 'masterPassword'    => $this->settings['mysql']['1password']['masterPassword'],
                 'url'               => $this->settings['mysql']['1password']['url'],
                 'email'             => $this->settings['mysql']['1password']['email'],

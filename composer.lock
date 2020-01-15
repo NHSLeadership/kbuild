@@ -1092,16 +1092,16 @@
         },
         {
             "name": "kubernetes/php-client",
-            "version": "v1.17.0",
+            "version": "v1.17.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/allansun/kubernetes-php-client.git",
-                "reference": "6e7f8442d774ef8991a59159a003700836f82402"
+                "reference": "6e4c93579bd21211d970c9f94f407ca401d20490"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/allansun/kubernetes-php-client/zipball/6e7f8442d774ef8991a59159a003700836f82402",
-                "reference": "6e7f8442d774ef8991a59159a003700836f82402",
+                "url": "https://api.github.com/repos/allansun/kubernetes-php-client/zipball/6e4c93579bd21211d970c9f94f407ca401d20490",
+                "reference": "6e4c93579bd21211d970c9f94f407ca401d20490",
                 "shasum": ""
             },
             "require": {
@@ -1141,7 +1141,7 @@
                 "docker",
                 "kubernetes"
             ],
-            "time": "2019-12-10T03:41:56+00:00"
+            "time": "2020-01-15T03:41:41+00:00"
         },
         {
             "name": "kubernetes/php-runtime",

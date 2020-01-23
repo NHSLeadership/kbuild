@@ -1092,16 +1092,16 @@
         },
         {
             "name": "kubernetes/php-client",
-            "version": "v1.17.1",
+            "version": "v1.17.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/allansun/kubernetes-php-client.git",
-                "reference": "6e4c93579bd21211d970c9f94f407ca401d20490"
+                "reference": "a16b61f999dc006099216a48b693c7c78d77159c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/allansun/kubernetes-php-client/zipball/6e4c93579bd21211d970c9f94f407ca401d20490",
-                "reference": "6e4c93579bd21211d970c9f94f407ca401d20490",
+                "url": "https://api.github.com/repos/allansun/kubernetes-php-client/zipball/a16b61f999dc006099216a48b693c7c78d77159c",
+                "reference": "a16b61f999dc006099216a48b693c7c78d77159c",
                 "shasum": ""
             },
             "require": {
@@ -1141,7 +1141,7 @@
                 "docker",
                 "kubernetes"
             ],
-            "time": "2020-01-15T03:41:41+00:00"
+            "time": "2020-01-23T03:42:32+00:00"
         },
         {
             "name": "kubernetes/php-runtime",
@@ -2710,16 +2710,16 @@
         },
         {
             "name": "symfony/inflector",
-            "version": "v4.4.2",
+            "version": "v4.4.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/inflector.git",
-                "reference": "98581481d9ddabe4db3a66e10202fe1fa08d791b"
+                "reference": "f419ab2853cc00471ffd7fc18e544b5f5a90adb1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/inflector/zipball/98581481d9ddabe4db3a66e10202fe1fa08d791b",
-                "reference": "98581481d9ddabe4db3a66e10202fe1fa08d791b",
+                "url": "https://api.github.com/repos/symfony/inflector/zipball/f419ab2853cc00471ffd7fc18e544b5f5a90adb1",
+                "reference": "f419ab2853cc00471ffd7fc18e544b5f5a90adb1",
                 "shasum": ""
             },
             "require": {
@@ -2764,7 +2764,7 @@
                 "symfony",
                 "words"
             ],
-            "time": "2019-11-06T12:02:32+00:00"
+            "time": "2020-01-04T13:00:46+00:00"
         },
         {
             "name": "symfony/polyfill-ctype",
@@ -3047,16 +3047,16 @@
         },
         {
             "name": "symfony/property-info",
-            "version": "v4.4.2",
+            "version": "v4.4.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/property-info.git",
-                "reference": "8afd280f159697177e48eefa89efd4db60a57665"
+                "reference": "e6355ba81c738be31c3c3b3cd7929963f98da576"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/property-info/zipball/8afd280f159697177e48eefa89efd4db60a57665",
-                "reference": "8afd280f159697177e48eefa89efd4db60a57665",
+                "url": "https://api.github.com/repos/symfony/property-info/zipball/e6355ba81c738be31c3c3b3cd7929963f98da576",
+                "reference": "e6355ba81c738be31c3c3b3cd7929963f98da576",
                 "shasum": ""
             },
             "require": {
@@ -3119,7 +3119,7 @@
                 "type",
                 "validator"
             ],
-            "time": "2019-11-05T16:11:08+00:00"
+            "time": "2020-01-04T13:00:46+00:00"
         },
         {
             "name": "symfony/service-contracts",

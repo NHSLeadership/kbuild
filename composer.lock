@@ -2472,27 +2472,27 @@
         },
         {
             "name": "spatie/async",
-            "version": "1.1.1",
+            "version": "1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/async.git",
-                "reference": "23b1e855310da03f6dc2accf9f41e27c7fa41481"
+                "reference": "8d4b54dc53acc434cfba6a3432b03510dc3d2a8c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/async/zipball/23b1e855310da03f6dc2accf9f41e27c7fa41481",
-                "reference": "23b1e855310da03f6dc2accf9f41e27c7fa41481",
+                "url": "https://api.github.com/repos/spatie/async/zipball/8d4b54dc53acc434cfba6a3432b03510dc3d2a8c",
+                "reference": "8d4b54dc53acc434cfba6a3432b03510dc3d2a8c",
                 "shasum": ""
             },
             "require": {
-                "opis/closure": "^3.0",
+                "opis/closure": "^3.4.2",
                 "php": "^7.1",
                 "symfony/process": "^3.3 || ^4.0 || ^5.0"
             },
             "require-dev": {
                 "larapack/dd": "^1.1",
-                "phpunit/phpunit": "^6.0",
-                "symfony/stopwatch": "^4.0"
+                "phpunit/phpunit": "^6.5",
+                "symfony/stopwatch": "^4.0 || ^5.0"
             },
             "suggest": {
                 "ext-pcntl": "Required to use async processes",
@@ -2525,7 +2525,7 @@
                 "async",
                 "spatie"
             ],
-            "time": "2019-12-24T11:06:08+00:00"
+            "time": "2020-02-14T07:11:19+00:00"
         },
         {
             "name": "symfony/console",
@@ -2998,16 +2998,16 @@
         },
         {
             "name": "symfony/process",
-            "version": "v4.4.2",
+            "version": "v4.4.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/process.git",
-                "reference": "b84501ad50adb72a94fb460a5b5c91f693e99c9b"
+                "reference": "f5697ab4cb14a5deed7473819e63141bf5352c36"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/process/zipball/b84501ad50adb72a94fb460a5b5c91f693e99c9b",
-                "reference": "b84501ad50adb72a94fb460a5b5c91f693e99c9b",
+                "url": "https://api.github.com/repos/symfony/process/zipball/f5697ab4cb14a5deed7473819e63141bf5352c36",
+                "reference": "f5697ab4cb14a5deed7473819e63141bf5352c36",
                 "shasum": ""
             },
             "require": {
@@ -3043,7 +3043,7 @@
             ],
             "description": "Symfony Process Component",
             "homepage": "https://symfony.com",
-            "time": "2019-12-06T10:06:46+00:00"
+            "time": "2020-01-09T09:50:08+00:00"
         },
         {
             "name": "symfony/property-info",

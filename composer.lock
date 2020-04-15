@@ -986,6 +986,7 @@
                     "email": "jakub.onderka@gmail.com"
                 }
             ],
+            "abandoned": "php-parallel-lint/php-console-color",
             "time": "2018-09-29T17:23:10+00:00"
         },
         {
@@ -1032,6 +1033,7 @@
                 }
             ],
             "description": "Highlight PHP code in terminal",
+            "abandoned": "php-parallel-lint/php-console-highlighter",
             "time": "2018-09-29T18:48:56+00:00"
         },
         {
@@ -2472,27 +2474,27 @@
         },
         {
             "name": "spatie/async",
-            "version": "1.1.1",
+            "version": "1.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/async.git",
-                "reference": "23b1e855310da03f6dc2accf9f41e27c7fa41481"
+                "reference": "e778fbe6f84da6b87d5bb737dfee28453d5c6fe4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/async/zipball/23b1e855310da03f6dc2accf9f41e27c7fa41481",
-                "reference": "23b1e855310da03f6dc2accf9f41e27c7fa41481",
+                "url": "https://api.github.com/repos/spatie/async/zipball/e778fbe6f84da6b87d5bb737dfee28453d5c6fe4",
+                "reference": "e778fbe6f84da6b87d5bb737dfee28453d5c6fe4",
                 "shasum": ""
             },
             "require": {
-                "opis/closure": "^3.0",
+                "opis/closure": "^3.4.2",
                 "php": "^7.1",
                 "symfony/process": "^3.3 || ^4.0 || ^5.0"
             },
             "require-dev": {
                 "larapack/dd": "^1.1",
-                "phpunit/phpunit": "^6.0",
-                "symfony/stopwatch": "^4.0"
+                "phpunit/phpunit": "^6.5",
+                "symfony/stopwatch": "^4.0 || ^5.0"
             },
             "suggest": {
                 "ext-pcntl": "Required to use async processes",
@@ -2525,7 +2527,7 @@
                 "async",
                 "spatie"
             ],
-            "time": "2019-12-24T11:06:08+00:00"
+            "time": "2020-04-15T05:50:42+00:00"
         },
         {
             "name": "symfony/console",
@@ -2998,16 +3000,16 @@
         },
         {
             "name": "symfony/process",
-            "version": "v4.4.2",
+            "version": "v4.4.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/process.git",
-                "reference": "b84501ad50adb72a94fb460a5b5c91f693e99c9b"
+                "reference": "3e40e87a20eaf83a1db825e1fa5097ae89042db3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/process/zipball/b84501ad50adb72a94fb460a5b5c91f693e99c9b",
-                "reference": "b84501ad50adb72a94fb460a5b5c91f693e99c9b",
+                "url": "https://api.github.com/repos/symfony/process/zipball/3e40e87a20eaf83a1db825e1fa5097ae89042db3",
+                "reference": "3e40e87a20eaf83a1db825e1fa5097ae89042db3",
                 "shasum": ""
             },
             "require": {
@@ -3043,7 +3045,7 @@
             ],
             "description": "Symfony Process Component",
             "homepage": "https://symfony.com",
-            "time": "2019-12-06T10:06:46+00:00"
+            "time": "2020-03-27T16:54:36+00:00"
         },
         {
             "name": "symfony/property-info",
